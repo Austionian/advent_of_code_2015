@@ -1,7 +1,8 @@
 use anyhow::Result;
 
 fn naughty(line: &str) -> usize {
-    // PART 1 if three_vowels(line) && double(line) && !excludes(line) {
+    // PART 1
+    // if three_vowels(line) && double(line) && !excludes(line) {
     //     return 1;
     // }
     // 0
@@ -42,24 +43,21 @@ fn repeat(line: &Vec<char>) -> bool {
     false
 }
 
-fn _excludes(line: &str) -> bool {
+fn excludes(line: &str) -> bool {
     const EXCLUSIONS: [&str; 4] = ["ab", "cd", "pq", "xy"];
 
     let parsed = line.chars().collect::<Vec<_>>();
 
-    let mut flag = false;
-    parsed.windows(2).for_each(|sl| {
-        let mut ss = String::from(sl[0]);
-        ss.push(sl[1]);
-        let sli: &str = &ss[..];
-        if EXCLUSIONS.contains(&sli) {
-            flag = true;
+    for sl in parsed.windows(2) {
+        let ss = format!("{}{}", sl[0], sl[1]);
+        if EXCLUSIONS.contains(&ss.as_str()) {
+            return true;
         }
-    });
-    flag
+    }
+    false
 }
 
-fn _double(line: &str) -> bool {
+fn double(line: &str) -> bool {
     for (i, c) in line.chars().enumerate() {
         if c == line.chars().nth(i + 1).unwrap_or('0') {
             return true;
@@ -68,7 +66,7 @@ fn _double(line: &str) -> bool {
     false
 }
 
-fn _three_vowels(line: &str) -> bool {
+fn three_vowels(line: &str) -> bool {
     const VOWELS: [char; 5] = ['a', 'e', 'i', 'o', 'u'];
 
     let mut sum = 0;
